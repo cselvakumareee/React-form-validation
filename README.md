@@ -1,3 +1,5 @@
+this project contains form validation react router and moment js
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
