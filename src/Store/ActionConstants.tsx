@@ -1,0 +1,2 @@
+export const ADD_ITEM = 'ADD_ITEM';
+export const EMAIL_VALIDATION = 'EMAIL_VALIDATION';
