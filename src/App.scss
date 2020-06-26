@@ -1,25 +1,44 @@
 .App {
-  
-  .app-header{
+  .app-header {
     display: flex;
     justify-content: center;
-    h2{
+    h2 {
       margin-left: 20px;
     }
   }
-  main{
+  main {
     display: flex;
     justify-content: center;
   }
-  .app-footer{
+  .app-footer {
     display: flex;
     justify-content: center;
     padding: 25px;
     position: relative;
     bottom: 0;
+    button {
+      background-color: transparent;
+      border: none;
+      color: black;
+      outline: 2px solid #5c9210;
+      cursor: pointer;
+      font: inherit;
+      padding: 10px 20px;
+      margin: 10px;
+      font-weight: bold;
+      &:hover{
+        background-color: #5c9210;
+      }
+      
+      a{
+        text-decoration: none;
+        color: #231f20;
+      }
+      a.active{
+        color: red;
+        
+      }
+      
+    }
   }
 }
-
-
-
-

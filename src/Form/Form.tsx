@@ -4,67 +4,35 @@ import View from "../View/View";
 import { connect } from "react-redux";
 import * as actionCreator from "../Store/ActionCreator";
 
-
 const FormComp = (props: any) => {
   const inputName: any = useRef();
   const inputPhone: any = useRef();
   const inputEmail: any = useRef();
   const inputPassword: any = useRef();
-  const [nameErr, setNameError]: any = useState("");
-  const [phoneErr, setPhoneError]: any = useState("");
-  const [emailErr, setEmailError]:any = useState("");
-  const [passwordErr, setPasswordError]:any = useState("");
-  const [dubplicateEmailErr, setDublicateEmail]:any = useState(false);
+  const [userName, setUserName]:any = useState('');
+  const [userNameValid, setUserNameValid]:any = useState(false);
+  const [phone, setPhone]:any = useState('');
+  const [phoneValid, setPhoneValid]:any = useState(false);
+  const [emil, setEmail]:any = useState('');
+  const [emailValid, setEmailValid]:any = useState(false);
+  const [password, setPassword]:any = useState('');
+  const [passwordValid, setPasswordValid]:any = useState(false);
+  const [formValid, setFormValid]:any = useState(false);
+  const [nameErrorMsg, setNameErrorMsg]:any = useState();
+  const [phoneErrorMsg, setPhoneErrorMsg]:any = useState();
+  const [emailErrorMsg, setEmailErrorMsg]:any = useState();
+  const [passwordErrorMsg, setPasswordErrorMsg]:any = useState();
   let [index, setIndex]:any = useState(0);
 
   const validateForm = () => {
-    let nameError = "";
-    let phoneError = "";
-    let emailError = "";
-    let passwordError = "";
-    let formName = inputName.current.value;
-    let formPhone = inputPhone.current.value;
-    let formEmail = inputEmail.current.value;
-    let formPassword = inputPassword.current.value;
-    if (inputName.current.value === "") {
-      
-      nameError = "Name should not be blank";
-    } else if (formName.length < 2) {
-      
-      nameError = "Name should be min 5 char";
+    alert('its calling');
+   let blockUserName:any = userName;
+    if(/^\d+$/.test(blockUserName)){
+      setNameErrorMsg('');
     }
-
-    if (inputPhone.current.value === "") {
-      
-      phoneError = "Phone number should not be blank";
-    } else if (formPhone.length < 2) {
-      
-      phoneError = "phone number should be min 5 char";
+    else{
+      setNameErrorMsg('Username should not contain NUmber');
     }
-
-    if (inputEmail.current.value === "") {
-        emailError = "Email should not be blank";
-      } else if (!formEmail.includes('@')) {
-        emailError = "Not an Email";
-    }
-
-    if (inputPassword.current.value === "") {
-      
-      passwordError = "Password should not be blank";
-    } else if (formPassword.length < 2) {
-      
-      passwordError = "Password should be min 5 char";
-    }
-
-    if (nameError || emailError || phoneError || passwordError) {
-      setNameError(nameError);
-      setPhoneError(phoneError);
-      setEmailError(emailError);
-      setPasswordError(passwordError);
-      return false;
-    }
-    
-    return true;
   };
 
   const validateEmail = (valEmail: any) => {
@@ -75,21 +43,22 @@ const FormComp = (props: any) => {
       return mail == valEmail
     }
     let isDublicate:any = valueArr.some(checkMail);
+    if(valueArr.some(checkMail)){
+      setEmailErrorMsg('Email Already Exist');
+    }
+    else{
+      setEmailErrorMsg('');
+    }
+    
     return isDublicate;
   };
 
-  const calculateSubmitTime = (submitTime:any) => {
-     let currentTime = Date.now();
-     let updateCurrentTime:any = new Intl.DateTimeFormat('en-US',{hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(currentTime);
-     let finalTimeStamp:any = submitTime - currentTime;
-     alert(finalTimeStamp);
-  }
-
   const addItem = (event: any, id:any) => {
+    
     event.preventDefault();
-    const valid = validateForm();
+   // const valid = validateForm();
     let dubplicatedEmail:any = '';
-    if (valid) {
+    
       let checkEmail = inputEmail.current.value;
       let uniqueEmail:any = validateEmail(checkEmail);
       if(!uniqueEmail){
@@ -99,10 +68,10 @@ const FormComp = (props: any) => {
       setIndex(index);
       newItem = {
         key: index,
-        name: inputName.current.value,
-        phone: inputPhone.current.value,
-        email: inputEmail.current.value,
-        password: inputPassword.current.value,
+        name: userName,
+        phone: phone,
+        email: emil,
+        password: password,
       };
       index++;
       props.onAddItem(newItem);
@@ -111,59 +80,150 @@ const FormComp = (props: any) => {
       inputEmail.current.value = '';
       inputPassword.current.value = '';
       }
-    }
-    else{
-      setDublicateEmail(true);
-    }
+    
+    // else{
+    //   setDublicateEmail(true);
+    // }
   };
 
+
+  const updateUserName = (userName:any) => {
+    setUserName(userName)
+    let usrName:any = userName;
+    console.log(usrName);
+    if(usrName.length > 3 && !/^\d+$/.test(usrName)){
+      setUserNameValid(true);
+      setNameErrorMsg('');
+    }
+    else if(usrName.length < 3 && !/^\d+$/.test(usrName)){
+      setUserNameValid(false);
+      setNameErrorMsg('this is string value & Enter atleast 3 char');
+    }
+    else if(usrName.length > 3 && /^\d+$/.test(usrName)){
+      setUserNameValid(false)
+      setNameErrorMsg('length ok & Enter ABCD');
+    }
+    else if(usrName.length < 3 && /^\d+$/.test(usrName)){
+      setUserNameValid(false)
+      setNameErrorMsg('Enter atleast 3 char & Enter only ABCD');
+    }
+    
+  }
+
+  const updatePhone = (phone:any) => {
+    setPhone(phone)
+    let phNo:any = phone;
+    console.log(phNo);
+    if(phNo.length > 3 && /^\d+$/.test(phNo)){
+      setPhoneValid(true);
+      setPhoneErrorMsg('');
+    }
+    else if(phNo.length < 3 && /^\d+$/.test(phNo)){
+      setPhoneValid(false);
+      setPhoneErrorMsg('this is NUM & Enter atleast 3 char');
+    }
+    else if(phNo.length > 3 && !/^\d+$/.test(phNo)){
+      setPhoneValid(false)
+      setPhoneErrorMsg('length ok & Enter Num');
+    }
+    else if(phNo.length < 3 && !/^\d+$/.test(phNo)){
+      setPhoneValid(false)
+      setPhoneErrorMsg('Enter atleast 3 char & Enter only NUM');
+    }
+  }
+
+  const updateEmail = (email:any) => {
+    setEmail(email);
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      setEmailValid(false);
+      setEmailErrorMsg('Invalid email format');
+    }
+    else{
+      setEmailValid(true);
+      setEmailErrorMsg('');
+    }
+  }
+
+  const updatePassword = (passwrd:any) => {
+    setPassword(passwrd);
+    let psWrd:any = passwrd;
+    if (psWrd.length < 6) {
+      setPasswordValid(false);
+      setPasswordErrorMsg('Password must be at least 6 characters long');
+    } else if (!/\d/.test(psWrd)){
+      setPasswordValid(false);
+      setPasswordErrorMsg('Password must contain a digit');
+    } else if (!/[!@#$%^&*]/.test(psWrd)){
+      setPasswordValid(false);
+      setPasswordErrorMsg('Password must contain special character: !@#$%^&*');
+    }
+    else{
+      setPasswordValid(true);
+      setPasswordErrorMsg('');
+    }
+  }
+
+  let submitButton:any;
+  if(userNameValid && phoneValid && emailValid && passwordValid){
+    submitButton = <button type="submit" onClick={(el)=>{addItem(el,1)}}>Submit</button>;
+  }
+  else{
+    submitButton = <button type="submit" disabled>Submit</button>;
+  }
 
   return (
     <div className="Form">
       
-      <form onSubmit={(el)=>{addItem(el,1)}}>
-          <div>
+      <form>
+          <div className="form-group">
             <label>Name</label>
         <input
           type="text"
           ref={inputName}
-          className="form-control"
+          onChange = {(e)=>updateUserName(e.target.value)}
+          className="Input"
           placeholder="Enter Your Name"
         />
-        <div style={{ fontSize: 12, color: "red" }}>{nameErr}</div>
+        <div className='error-msg'>{nameErrorMsg}</div>
         </div>
-        <div>
+
+        <div className="form-group">
         <label>Phone</label>
         <input
           type="text"
           ref={inputPhone}
-          className="form-control"
+          onChange = {(e)=>updatePhone(e.target.value)}
+          className="Input"
           placeholder="Enter Your Phonenumber"
         />
-        <div style={{ fontSize: 12, color: "red" }}>{phoneErr}</div>
+        <div className='error-msg'>{phoneErrorMsg}</div>
         </div>
-        <div>
+
+        <div className="form-group">
         <label>Email</label>
         <input
           type="text"
           ref={inputEmail}
-          className="form-control"
+          onChange = {(e)=>updateEmail(e.target.value)}
+          className="Input"
           placeholder="Enter Your EmailId"
         />
-
-        <div style={{ fontSize: 12, color: "red" }}>{emailErr}</div>
+        <div className='error-msg'>{emailErrorMsg}</div>
         </div>
-        <div>
+
+        <div className="form-group">
         <label>Password</label>
           <input
           type="text"
           ref={inputPassword}
-          className="form-control"
+          onChange = {(e)=>updatePassword(e.target.value)}
+          className="Input"
           placeholder="Enter Your Password"
         />
-          <div style={{ fontSize: 12, color: "red" }}>{passwordErr}</div>
+        <div className='error-msg'>{passwordErrorMsg}</div>
         </div>
-        <button type="submit">Submit</button>
+        
+        {submitButton}
       </form>
     </div>
   );

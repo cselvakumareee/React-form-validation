@@ -25,8 +25,8 @@ function App() {
 
       </main>
       <div className="app-footer">
-         <button><NavLink to="/">Form</NavLink></button>
-         <button><NavLink to="/view">View</NavLink></button>
+         <button><NavLink  to="/" exact>Form</NavLink></button>
+         <button><NavLink  to="/view">View</NavLink></button>
       </div>
     </div>
   );
